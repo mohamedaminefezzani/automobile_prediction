@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+<body>
+    <form class="p-3 text-center" action="/predict" method="POST">
+        Car Company : <input class = "form-control" type="text" name="company" style="text-transform: uppercase;" required="required"> <br>
+        Car Model : <input class = "form-control" type="text" name="model" style="text-transform: uppercase;" required="required"> <br>
+        Model Year : <input class = "form-control" type="number" name="year" required="required"> <br>
+        Run Kilometers : <input class = "form-control" type="number" name="kms" required="required"> <br>
+        Fuel Type : <select class="selectpicker form-control" name = "fuel" required="required">
+            <option value="Petrol">Petrol</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Hybride (essence)">Petrol Hybrid</option>
+            <option value="Hybride (diesel)">Diesel Hybrid</option>
+            <option value="Plug-in Hybrid">Plug-in Hybrid</option>
+        </select> <br>
+        Transmission : <select name = "trns" required="required">
+            <option value="Manual">Manual</option>
+            <option value="Automatic">Automatic</option>
+        </select> <br>
+        Drivetrain : <select name = "drvtrn" required="required">
+            <option value="FWD">FWD</option>
+            <option value="RWD">RWD</option>
+            <option value="AWD">AWD</option>
+        </select> <br>
+        Taxrate : <input class = "form-control" type="number" name='tax' required="required"> <br>
+        Prediction: {{result}} <br>
+        <input class="btn btn-primary mt-3" type="submit" value="Predict">
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function updatePrediction() {
+            var timestamp = new Date().getTime();
+            var formData = {
+                company: $('#company').val(),
+                model: $('#model').val(),
+                year: $('#year').val(),
+                kms: $('#kms').val(),
+                fuel: $('#fuel').val(),
+                trns: $('#trns').val(),
+                drvtrn: $('#drvtrn').val(),
+                tax: $('#tax').val(),
+                timestamp: timestamp
+            };
+
+    $.post('/predict', formData, function(data) {
+        $('#predictedPrice').text(data.prediction);
+    });
+}
+
+        // Call updatePrediction when the page loads
+        $(document).ready(function() {
+            updatePrediction();
+        });
+    </script>
+
+</body>
+</html>
