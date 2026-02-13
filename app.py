@@ -5,6 +5,7 @@ import pandas as pd
 from datetime import date
 from sklearn.preprocessing import StandardScaler
 from flask import Flask, render_template, request, make_response
+import os
 
 app = Flask(__name__)
 
@@ -70,5 +71,8 @@ def predict():
         timestamp = int(time.time())
         return render_template('index.html', result=result, timestamp=timestamp)
 
-if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+if __name__ == "__main__":
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000))
+    )
